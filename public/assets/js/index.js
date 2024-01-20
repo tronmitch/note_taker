@@ -5,11 +5,11 @@ let saveNoteBtn;
 let newNoteBtn;
 let noteList;
 
-if (window.location.pathname === '/notes') {
+if (window.location.pathname.includes('/notes')) {
   noteForm = document.querySelector('.note-form');
   noteTitle = document.querySelector('.note-title');
   noteText = document.querySelector('.note-textarea');
-  saveNoteBtn = document.querySelector('#save-note');
+  saveNoteBtn = document.querySelector('.save-note');
   newNoteBtn = document.querySelector('.new-note');
   clearBtn = document.querySelector('.clear-btn');
   noteList = document.querySelectorAll('.list-container .list-group');
@@ -28,13 +28,13 @@ const hide = (elem) => {
 // activeNote is used to keep track of the note in the textarea
 let activeNote = {};
 
-// const getNotes = () =>
-//   fetch('../db/db.json', {
-//     method: 'GET',
-//     headers: {
-//       'Content-Type': 'application/json'
-//     }
-//   });
+const getNotes = () =>
+  fetch('../db/db.json', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
 
 const saveNote = (note) =>
   fetch('/api/notes', {
@@ -54,7 +54,7 @@ const deleteNote = (id) =>
   });
 
 const renderActiveNote = () => {
-  // hide(saveNoteBtn);
+  hide(saveNoteBtn);
   hide(clearBtn);
 
   if (activeNote.id) {
@@ -121,7 +121,7 @@ const handleRenderBtns = () => {
   if (!noteTitle.value.trim() && !noteText.value.trim()) {
     hide(clearBtn);
   } else if (!noteTitle.value.trim() || !noteText.value.trim()) {
-    hide(saveNoteBtn);
+    // hide(saveNoteBtn);
   } else {
     show(saveNoteBtn);
   }
@@ -184,7 +184,7 @@ const renderNoteList = async (notes) => {
 // Gets notes from the db and renders them to the sidebar
 const getAndRenderNotes = () => getNotes().then(renderNoteList);
 
-if (window.location.pathname === '/notes') {
+if (window.location.pathname.includes('/notes')) {
   saveNoteBtn.addEventListener('click', handleNoteSave);
   newNoteBtn.addEventListener('click', handleNewNoteView);
   clearBtn.addEventListener('click', renderActiveNote);
