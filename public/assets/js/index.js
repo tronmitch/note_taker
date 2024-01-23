@@ -1,3 +1,4 @@
+
 let noteForm;
 let noteTitle;
 let noteText;
@@ -29,7 +30,7 @@ const hide = (elem) => {
 let activeNote = {};
 
 const getNotes = () =>
-  fetch('../db/db.json', {
+  fetch('/api/notes', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -43,6 +44,15 @@ const saveNote = (note) =>
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(note)
+  })    .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .catch(error => {
+    console.error('Error during POST request:', error);
+    throw error; // Rethrow the error for further handling
   });
 
 const deleteNote = (id) =>
