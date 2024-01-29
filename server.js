@@ -13,14 +13,13 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
+  
 });
 
-app.get('/api/notes', (req, res) => res.json(noteData));
+app.get('/api/notes', async (req, res) => await res.json(noteData));
 
-app.post('/api/notes', async (req,res)=>
-{
+app.post('/api/notes', async (req,res)=>{
   console.info(`${req.method} request reveived to add note`);
-
   try{
     const filePath = path.join(__dirname, './db/db.json');
     const existingData = await fs.readFile(filePath, 'utf8');
@@ -28,11 +27,23 @@ app.post('/api/notes', async (req,res)=>
     const newData = req.body;
     jsonData.push(newData);
     await fs.writeFile(filePath, JSON.stringify(jsonData, null, 2),'utf8');
+    
+    noteData.push(newData);
+    console.info(jsonData)
+    res.status(201).json(jsonData)
   }catch(error){
     console.error('Error adding Data', error);
     res.status(500).json({error: 'Interal Server Error'})
   }
+
 });
+
+// app.delete('/api/notes', async (req,res)=>{
+//   const noteToDelete = noteData.find(id => id.id === req.body.id) => 
+//   noteDate.
+//   console.log(req.body)
+//   res.end()
+// })
 
 app.listen(PORT, () => {
   console.log(`Example app listening at http://localhost:${PORT}`);
