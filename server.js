@@ -2,7 +2,8 @@ const express = require('express');
 const fs = require('fs/promises');
 const path = require('path')
 
-const PORT = 3001;
+const PORT = process.env.PORT | 3001;
+
 const noteData = require('./db/db.json');
 
 const app = express();
@@ -46,21 +47,7 @@ app.delete('/api/notes/:id', async (req,res)=>{
   await fs.writeFile(filePath, JSON.stringify(noteData, null, 2),'utf8');
   res.end()
 })
-// const noteToDelete = noteData[req.params.id]
-// console.log(req.params.title)
-// console.log(noteData)
-// console.log(noteToDelete)
-// try{
-//   const filePath = path.join(__dirname, './db/db.json');
-//   const existingData = await fs.readFile(filePath, 'utf8');
-//   const jsonData = JSON.parse(existingData);
-//   jsonData.splice( req.params.id,1)
-//   console.log(jsonData)
-//   res.end()
-// }catch(error){
-//   console.error('Error adding Data', error);
-//   res.status(500).json({error: 'Interal Server Error'})
-// }
+
 
 app.listen(PORT, () => {
   console.log(`Example app listening at http://localhost:${PORT}`);
