@@ -38,12 +38,29 @@ app.post('/api/notes', async (req,res)=>{
 
 });
 
-// app.delete('/api/notes', async (req,res)=>{
-//   const noteToDelete = noteData.find(id => id.id === req.body.id) => 
-//   noteDate.
-//   console.log(req.body)
+app.delete('/api/notes/:id', async (req,res)=>{
+  console.log(noteData)
+  noteData.splice( req.params.id,1)
+  console.log(noteData)
+  const filePath = path.join(__dirname, './db/db.json');
+  await fs.writeFile(filePath, JSON.stringify(noteData, null, 2),'utf8');
+  res.end()
+})
+// const noteToDelete = noteData[req.params.id]
+// console.log(req.params.title)
+// console.log(noteData)
+// console.log(noteToDelete)
+// try{
+//   const filePath = path.join(__dirname, './db/db.json');
+//   const existingData = await fs.readFile(filePath, 'utf8');
+//   const jsonData = JSON.parse(existingData);
+//   jsonData.splice( req.params.id,1)
+//   console.log(jsonData)
 //   res.end()
-// })
+// }catch(error){
+//   console.error('Error adding Data', error);
+//   res.status(500).json({error: 'Interal Server Error'})
+// }
 
 app.listen(PORT, () => {
   console.log(`Example app listening at http://localhost:${PORT}`);
