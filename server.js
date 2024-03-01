@@ -2,7 +2,7 @@ const express = require('express');
 const fs = require('fs/promises');
 const path = require('path')
 
-const PORT = process.env.PORT | 3001;
+const PORT = process.env.PORT || 3001;
 
 const noteData = require('./db/db.json');
 
